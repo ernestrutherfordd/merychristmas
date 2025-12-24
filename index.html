@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merry Christmas 🎄</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Nunito',sans-serif;
+  background:#000;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+
+/* ===== PAGE ===== */
+.page{
+  position:absolute;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:flex-start;
+  text-align:center;
+  color:white;
+  padding:40px 15px;
+  overflow-y:auto;
+}
+.page.active{display:flex;}
+
+/* ===== BACKGROUND IMG ===== */
+.bg-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-2;
+}
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:-1;
+}
+
+/* ===== BUTTON ===== */
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  background:#b11226;
+  color:white;
+  font-size:1rem;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{transform:scale(1.05);}
+button:disabled{background:#555; cursor:not-allowed;}
+
+/* ===== INPUT ===== */
+input{
+  padding:12px 15px;
+  font-size:1rem;
+  border-radius:8px;
+  border:none;
+  margin-top:15px;
+  width:70%;
+  max-width:250px;
+}
+
+/* ===== HERO ===== */
+.hero{
+  animation:fadeUp 1.4s ease;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:3rem;
+}
+.hero p{margin:20px 0}
+
+/* ===== LETTER ===== */
+.letter{
+  background:#e6c9a8;
+  color:#4b1b1b;
+  padding:25px;
+  width:100%;
+  max-width:480px;
+  border-radius:12px;
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+  animation:openLetter 1s ease;
+  margin:20px auto;
+  overflow-y:auto;
+  max-height:70vh;
+}
+.letter h2{
+  font-family:'Playfair Display',serif;
+  color:#8b0000;
+}
+.letter p{
+  margin-top:15px;
+  line-height:1.8;
+  text-align:left;
+}
+
+/* ===== FORTUNE ===== */
+.fortune-box{
+  background:rgba(255,255,255,.92);
+  color:#8b0000;
+  padding:25px;
+  border-radius:18px;
+  width:90%;
+  max-width:420px;
+  animation:fadeUp 1s ease;
+  margin:20px auto;
+}
+.fortune-box h3{
+  font-family:'Playfair Display',serif;
+}
+.fortune-wheel{
+  margin:20px 0;
+  font-size:1.2rem;
+  font-weight:600;
+  min-height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .2s, opacity .2s;
+}
+.fortune-wheel.spin{
+  transform:scale(1.1);
+  opacity:.7;
+}
+.fortune-explain{
+  margin-top:10px;
+  font-size:0.95rem;
+  text-align:left;
+  color:#4b1b1b;
+}
+
+/* ===== NAV ===== */
+.nav{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+/* ===== SNOW ===== */
+.snow{
+  position:fixed;
+  top:-10px;
+  color:white;
+  animation:snowfall linear infinite;
+  opacity:.8;
+  pointer-events:none;
+}
+
+/* ===== CONFETTI ===== */
+.confetti{
+  position:fixed;
+  width:10px;
+  height:10px;
+  background-color:red;
+  z-index:9999;
+  pointer-events:none;
+  opacity:0.9;
+  border-radius:50%;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes snowfall{ to{transform:translateY(110vh);} }
+@keyframes fadeUp{ from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);} }
+@keyframes openLetter{ from{transform:scale(.8);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:600px){
+  .hero h1{font-size:2rem;}
+  .letter{font-size:0.95rem; padding:20px; max-height:65vh;}
+  .fortune-box{padding:20px; width:95%;}
+  button{padding:10px 20px; font-size:0.95rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== MUSIC ===== -->
+<audio id="bgm" loop>
+  <source src="Mariah Carey - All I Want for Christmas Is You (Make My Wish Come True Edition).mp3" type="audio/mpeg">
+</audio>
+
+<!-- ===== PAGE 0: INPUT NAMA ===== -->
+<div class="page active" id="page0">
+  <div class="hero">
+    <h1>🎄 Welcome! 🎄</h1>
+    <p>Enter your name to see your Christmas message:</p>
+    <input type="text" id="username" placeholder="Your name...">
+    <br>
+    <button onclick="startChristmas()">Start</button>
+  </div>
+</div>
+
+<!-- ===== PAGE 1 ===== -->
+<div class="page" id="page1">
+  <img src="gemes.jpeg" class="bg-img" alt="">
+  <div class="overlay"></div>
+  <div class="hero">
+    <h1 id="heroName">Merry Christmas!!!</h1>
+    <p>This gift is only for you</p>
+    <button onclick="goPage(2)">Open !</button>
+  </div>
+</div>
+
+<!-- ===== PAGE 2 ===== -->
+<div class="page" id="page2">
+  <img src="Santa Ron and Reindeer Toto for Christmas 2023.jpeg" class="bg-img" alt="">
+  <div class="overlay"></div>
+  <div class="letter">
+    <h2 id="letterName">Dear friend 🤍</h2>
+    <p>
+      merry christmas! <br><br>
+     merry christmas! i hope today feels really special for you, like all the little things around you are just a reminder of how awesome this season can be. i hope you notice the twinkle of the lights, the smell of cookies or hot chocolate, and even just the tiny moments that make you smile without thinking too much. semoga kamu bisa ngerasain hangatnya christmas dan semua hal manis yang bikin hati happy. <br><br>
+     just wanna say, love, you really matter and you always make people around you smile, even if you don’t always notice it yourself. may this christmas leave sweet, soft memories in your heart, and may the new year bring moments that make you laugh, feel safe, and feel loved exactly the way you are. enjoy today fully, take in every little joy, and let yourself feel how special and appreciated you really are. <br><br>
+sending all my warmest christmas hugs and love your way 🤍✨
+keep smiling, have fun, and merry christmas again bro!!  <br><br>
+with all my heart, ernest rutherford.
+    </p>
+    <div class="nav">
+      <button onclick="goPage(1)">Back</button>
+      <button onclick="goPage(3)">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 3 ===== -->
+<div class="page" id="page3">
+  <img src="wowimut.jpeg" class="bg-img" alt="">
+  <div class="overlay"></div>
+  <div class="fortune-box">
+    <h3>🎄 Christmas Fortune 🎄</h3>
+    <div class="fortune-wheel" id="fortune">spin to see your fortune ✨</div>
+    <div class="fortune-explain" id="fortuneExplain"></div>
+    <div class="nav">
+      <button id="spinBtn" onclick="spinFortune()">Spin Fortune 🍪</button>
+      <button onclick="goPage(2)">Back</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== PAGE CONTROL ===== */
+function goPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page'+n).classList.add('active');
+}
+
+/* ===== START & SET NAMA ===== */
+function startChristmas(){
+  const name = document.getElementById("username").value.trim();
+  if(!name){alert("Please enter your name!"); return;}
+  document.getElementById("heroName").innerText = `Merry Christmas, ${name}!!!`;
+  document.getElementById("letterName").innerText = `Dear ${name} 🤍`;
+
+  // play music
+  const bgm = document.getElementById("bgm");
+  if(bgm.paused){ bgm.play().catch(()=>{}); }
+
+  goPage(1);
+}
+
+/* ===== FORTUNE SPIN & CONFETTI ===== */
+const fortunes=[
+  {text:"You will have a joyful year ahead 🤍",
+   explain:"Your days will be filled with laughter and happiness. You will find small joys in everyday moments that bring warmth to your heart.\n\nMoreover, your positive energy will attract wonderful people and experiences into your life, reminding you of the beauty that surrounds you."},
+  {text:"Someone treasures you deeply",
+   explain:"There is a special person who values your presence immensely. Their thoughts often wander to you, and they appreciate the little things you do.\n\nThis recognition is not just fleeting; it reflects the genuine impact you have on people’s lives. Cherish these bonds, for they bring quiet fulfillment and love."},
+  {text:"Warm moments are waiting for you",
+   explain:"Soon, you will encounter moments that fill your heart with warmth and calm. They may come as small surprises or acts of kindness that you didn't expect.\n\nThese moments will remind you to pause and enjoy the present, creating cherished memories that stay with you long after the season ends."},
+  {text:"Peace will find you",
+   explain:"A sense of inner peace is approaching your life. Challenges may still appear, but you will find yourself handling them with greater ease and understanding.\n\nThis tranquility will allow you to focus on what truly matters, nurturing your soul and helping you appreciate the subtle beauty in your daily life."},
+  {text:"You are enough",
+   explain:"You possess all the qualities needed to thrive and be happy. Any doubt or insecurity you feel is temporary and will fade as you recognize your true worth.\n\nBelieve in yourself and your journey, for the universe has a way of rewarding those who stay true to themselves with joy and fulfillment."},
+  {text:"Kindness returns to you",
+   explain:"Every kind act you have given, no matter how small, will come back to you in ways you cannot yet imagine. Your generosity plants seeds of happiness around you.\n\nYou will see that giving from the heart not only touches others but also creates ripples that enhance your own life in unexpected and delightful ways."},
+  {text:"Soft days are coming",
+   explain:"Gentle and calm days are on the horizon, bringing moments of quiet reflection and simple joys. The hustle of life will soften, giving you time to breathe.\n\nTake advantage of these days to nurture yourself, enjoy the small pleasures, and reconnect with what makes your heart happy."},
+  {text:"You are appreciated",
+   explain:"Those around you notice your efforts and the love you give. Even if words aren't always spoken, your impact is deeply felt.\n\nFeeling appreciated will remind you of your value and inspire you to continue being the wonderful person you are, creating positivity wherever you go."},
+  {text:"Someone misses you",
+   explain:"There is someone who holds you close in their thoughts. They long for your presence and cherish the moments you share together.\n\nThis feeling can serve as a gentle reminder that you matter deeply to others, and that connection, even from afar, can bring warmth to your heart."},
+  {text:"Your heart will feel lighter",
+   explain:"Emotional burdens you’ve been carrying will begin to ease, allowing your heart to breathe freely. Relief and clarity are on the way.\n\nThis newfound lightness will open you to joy and love, helping you approach life with a renewed sense of optimism and hope."},
+  {text:"Joy hides in small things",
+   explain:"Happiness can often be found in subtle, overlooked moments—the aroma of fresh coffee, a kind word, or a beautiful sunset.\n\nLearning to notice and appreciate these tiny treasures will make your days brighter and remind you that life’s magic often lies in simplicity."},
+  {text:"Good news will surprise you",
+   explain:"Unexpected good news is headed your way. It may come from work, relationships, or personal endeavors, catching you pleasantly off guard.\n\nThese delightful surprises serve as reminders that life has its magical twists, rewarding patience and positivity with wonderful moments."},
+  {text:"You are loved quietly",
+   explain:"Someone cares for you deeply, even if they do not always express it loudly. Their love is steady, sincere, and enduring.\n\nRecognize this quiet affection as a source of comfort and strength, and let it remind you of the warmth that surrounds you even in subtle ways."},
+  {text:"Luck walks beside you",
+   explain:"Fortune is on your side in unexpected ways. Opportunities may appear suddenly, and circumstances will align in your favor.\n\nEmbrace these moments with gratitude, for luck works best when combined with your efforts and positive attitude."},
+  {text:"You bring warmth",
+   explain:"Your presence naturally uplifts those around you. Friends, family, and even strangers feel comforted by your kindness and energy.\n\nContinue sharing your warmth—it has a ripple effect, brightening not only your life but also the lives of everyone you encounter."},
+  {text:"Your dreams matter",
+   explain:"The aspirations you hold are important and achievable. Every step you take toward them, no matter how small, is meaningful.\n\nTrust in your abilities and stay committed. Your dedication will manifest in outcomes that are both rewarding and fulfilling."},
+  {text:"You will laugh more",
+   explain:"Joyful and playful moments are coming your way, bringing laughter that will lift your spirits.\n\nEmbrace these times fully; laughter is a powerful healer, lightening burdens and connecting hearts in ways words cannot express."},
+  {text:"You are never alone",
+   explain:"Support and love surround you, even when it feels distant. Friends, family, and loved ones are present in your life in countless subtle ways.\n\nUnderstanding this can give you confidence and courage, knowing that whatever challenges arise, you are backed by invisible but powerful networks of care."},
+  {text:"Calm nights await",
+   explain:"Restful and peaceful nights are approaching. You will find solace in sleep and reflection, allowing your mind and body to rejuvenate.\n\nThese calm evenings will provide clarity and serenity, helping you approach each new day with renewed strength and balance."},
+  {text:"You deserve gentle love",
+   explain:"You are worthy of tender affection and care. Both giving and receiving love will enrich your life deeply.\n\nCherish relationships that honor your heart, and allow yourself to feel the depth and warmth of genuine connection."},
+  {text:"Hope stays with you",
+   explain:"No matter the challenges, hope remains steadfast by your side. It will guide you through difficult moments, offering perspective and resilience.\n\nCling to this hope, and let it fuel your optimism and determination, leading you toward brighter days."},
+  {text:"You shine softly",
+   explain:"Your light is gentle but noticeable, touching lives quietly yet meaningfully. People see your value without the need for grand gestures.\n\nThis soft shine is powerful; it reminds you that subtlety and authenticity often leave the most lasting impressions."},
+  {text:"Your efforts matter",
+   explain:"All your hard work, dedication, and care contribute to meaningful outcomes. Even if progress seems slow, it is real and significant.\n\nRecognize and celebrate your perseverance—it is the quiet force that shapes your successes and touches those around you."},
+  {text:"Peace chooses you",
+   explain:"Serenity and balance will find their way to you. Stress and worry will diminish, allowing calm and clarity to guide your actions.\n\nThis peace will help you make thoughtful decisions, nurture relationships, and live harmoniously with yourself and others."},
+  {text:"Warm hugs are coming",
+   explain:"Comforting moments of physical and emotional warmth are approaching. Someone special may offer a hug or words of reassurance.\n\nThese gestures will remind you of the love that surrounds you, reinforcing the feeling of safety and belonging."},
+  {text:"You are safe",
+   explain:"A sense of security is coming into your life. You will feel protected in your choices and surroundings.\n\nThis safety allows you to explore, take risks, and live fully, knowing that support and stability are always present."},
+  {text:"Your story matters",
+   explain:"Your experiences, struggles, and triumphs hold meaning. Sharing your journey can inspire and heal not only yourself but also others.\n\nEmbrace your narrative, honor your path, and recognize that your unique story enriches the world around you."},
+  {text:"Joy follows you",
+   explain:"Happiness tends to gravitate toward you, manifesting in unexpected smiles, encounters, and moments.\n\nNotice these sparks of joy—they are gentle reminders that life continually offers happiness when we remain open and present."},
+  {text:"You will feel loved",
+   explain:"Affection and care from others will become more evident in your life. People will show you that you are cherished in ways both big and small.\n\nOpen your heart to receive this love fully, allowing it to deepen connections and bring warmth to your everyday experiences."},
+  {text:"Light surrounds you",
+   explain:"Positive energy and guidance envelop your life. You will notice clarity and optimism in your surroundings and decisions.\n\nThis illumination aids your journey, highlighting opportunities, insights, and paths that align with your growth and happiness."},
+  {text:"You inspire someone",
+   explain:"Your actions and presence positively influence someone else. Even small deeds of kindness or courage can spark motivation.\n\nRecognize the impact you have; it encourages you to continue being your authentic self, knowing your life touches others in meaningful ways."},
+  {text:"Your heart is strong",
+   explain:"Emotional resilience defines you. Challenges may arise, but you have the inner strength to navigate them gracefully.\n\nThis strength allows you to face life with courage, love deeply, and persevere in ways that build lasting fulfillment."},
+  {text:"Good things grow slowly",
+   explain:"Patience will reveal rewards in your life. Progress may seem gradual, but meaningful outcomes are developing beneath the surface.\n\nTrust the process; nurturing your goals and relationships carefully ensures sustainable and deep satisfaction."},
+  {text:"Magic exists tonight",
+   explain:"Moments of wonder and surprise await. Small magical experiences may appear in everyday life, reminding you of joy and mystery.\n\nEmbrace these magical signs—they are the universe's gentle way of keeping life enchanting and your heart hopeful."},
+  {text:"Kindness protects you",
+   explain:"Your compassionate actions not only help others but also shield you from negativity. Generosity fosters goodwill and positive energy.\n\nBy spreading kindness, you create a protective aura that attracts love, happiness, and security into your life."},
+  {text:"Your smile heals",
+   explain:"Your cheerful presence uplifts those around you. A simple smile can lighten moods and ease tension.\n\nNever underestimate the power of your warmth; your joy can influence and comfort others in ways words cannot convey."},
+  {text:"Peace feels closer",
+   explain:"Harmony and calm are approaching your life. Stressful situations will begin to resolve naturally.\n\nFeel this peace as a guiding force, helping you maintain balance and approach life with grace and patience."},
+  {text:"Love finds its way",
+   explain:"Affection and connection are on the horizon. Whether romantic, friendly, or familial, love will reach you in meaningful ways.\n\nOpen yourself to receive it fully; genuine connection strengthens your heart, your relationships, and your sense of fulfillment."}
+];
+
+
+
+let hasSpun = false;
+function spinFortune(){
+  if(hasSpun) return; // hanya sekali
+  const name = document.getElementById("username").value.trim();
+  const box = document.getElementById("fortune");
+  const explain = document.getElementById("fortuneExplain");
+  const spinBtn = document.getElementById("spinBtn");
+
+  const index = Math.floor(Math.random()*fortunes.length);
+  const selected = fortunes[index];
+
+  box.classList.add("spin");
+  box.innerText = `${name}, ${selected.text}`;
+  explain.innerText = selected.explain;
+
+  spinBtn.disabled = true;
+  hasSpun = true;
+
+  setTimeout(()=>{box.classList.remove("spin"); createConfetti(); },500);
+}
+
+/* ===== SNOW ===== */
+for(let i=0;i<60;i++){
+  const s=document.createElement('div');
+  s.className='snow';
+  s.innerText='❄';
+  s.style.left=Math.random()*100+'vw';
+  s.style.fontSize=10+Math.random()*20+'px';
+  s.style.animationDuration=5+Math.random()*10+'s';
+  document.body.appendChild(s);
+}
+
+/* ===== CONFETTI ===== */
+function createConfetti(){
+  const colors = ["#ff0","#f00","#0f0","#0ff","#f0f","#fff"];
+  for(let i=0;i<150;i++){
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+    confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+    confetti.style.left = Math.random()*100 + "vw";
+    confetti.style.top = "-10px";
+    confetti.style.width = 5 + Math.random()*10 + "px";
+    confetti.style.height = 5 + Math.random()*10 + "px";
+    document.body.appendChild(confetti);
+
+    const fall = confetti.animate([
+      {transform: `translateY(0px) rotate(0deg)`},
+      {transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random()*720}deg)`}
+    ],{
+      duration: 4000 + Math.random()*2000,
+      iterations:1,
+      easing:"ease-out"
+    });
+
+    fall.onfinish = ()=>{confetti.remove();}
+  }
+}
+</script>
+</body>
+</html>
